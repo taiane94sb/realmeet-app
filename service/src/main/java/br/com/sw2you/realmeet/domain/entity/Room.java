@@ -1,10 +1,27 @@
 package br.com.sw2you.realmeet.domain.entity;
 
+import static java.util.Objects.isNull;
+
+import java.util.Objects;
+import javax.persistence.*;
+
+@Entity
+@Table(name = "room")
 public class Room {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "seats", nullable = false)
     private Integer seats;
+
+    @Column(name = "active", nullable = false)
     private Boolean active;
+
+    public Room() {}
 
     private Room(Long id, String name, Integer seats, Boolean active) {
         this.id = id;
@@ -13,7 +30,12 @@ public class Room {
         this.active = active;
     }
 
-    public Room() {}
+    @PrePersist
+    public void prePersist() {
+        if (isNull(active)) {
+            active = true;
+        }
+    }
 
     public static Builder newBuilder() {
         return new Builder();
