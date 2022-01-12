@@ -3,16 +3,14 @@ package br.com.sw2you.realmeet.unit;
 import static br.com.sw2you.realmeet.utils.MapperUtils.roomMapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import br.com.sw2you.realmeet.core.BaseUnitTest;
 import br.com.sw2you.realmeet.mapper.RoomMapper;
 import br.com.sw2you.realmeet.utils.TestConstants;
 import br.com.sw2you.realmeet.utils.TestDataCreator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
-public class RoomMapperUnitTest {
+public class RoomMapperUnitTest extends BaseUnitTest {
     private RoomMapper victim;
 
     @BeforeEach
