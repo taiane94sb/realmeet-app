@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 @ActiveProfiles(profiles = "integration-test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = Application.class)
-public class BaseIntegrationTest {
+public abstract class BaseIntegrationTest {
     @Autowired
     private Flyway flyway;
 
