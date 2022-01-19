@@ -21,7 +21,7 @@ public class RoomMapperUnitTest extends BaseUnitTest {
     @Test
     void testFromEntityToDto() {
         var room = TestDataCreator.newRoomBuilder().id(TestConstants.DEFAULT_ROOM_ID).build();
-        var dto = victim.fromEntityToEntity(room);
+        var dto = victim.fromEntityToDto(room);
 
         assertEquals(room.getName(), dto.getName());
         assertEquals(room.getSeats(), dto.getSeats());

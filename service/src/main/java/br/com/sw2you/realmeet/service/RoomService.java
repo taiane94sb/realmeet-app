@@ -25,13 +25,12 @@ public class RoomService {
         Room room = roomRepository
             .findByIdAndActive(id, true)
             .orElseThrow(() -> new RoomNotFoundException("Room not found: " + id));
-        return roomMapper.fromEntityToEntity(room);
+        return roomMapper.fromEntityToDto(room);
     }
 
     public RoomDTO createRoom(CreateRoomDTO createRoomDTO) {
-        var room = Room.newBuilder().seats(createRoomDTO.getSeats()).name(createRoomDTO.getName()).build();
+        var room = roomMapper.fromCreateRoomDtoToEntity(createRoomDTO);
         roomRepository.save(room);
-
-        return new RoomDTO().id(room.getId()).seats(room.getSeats()).name(room.getName());
+        return roomMapper.fromEntityToDto(room);
     }
 }
