@@ -44,4 +44,30 @@ public final class ValidatorUtils {
         }
         return false;
     }
+
+    public static boolean validateMaxValue(
+        Integer field,
+        String fieldName,
+        int maxValue,
+        ValidatorErrors validatorErrors
+    ) {
+        if (!isNull(field) && field > maxValue) {
+            validatorErrors.add(fieldName, fieldName + ValidatorConstants.EXCEEDS_MAX_VALUE);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean validateMinValue(
+        Integer field,
+        String fieldName,
+        int maxValue,
+        ValidatorErrors validatorErrors
+    ) {
+        if (!isNull(field) && field < maxValue) {
+            validatorErrors.add(fieldName, fieldName + ValidatorConstants.BELOW_MIN_VALUE);
+            return true;
+        }
+        return false;
+    }
 }
