@@ -42,8 +42,8 @@ public class RoomValidatorUnitTest {
             () -> victim.validate(newCreateRoomDTO().name(StringUtils.rightPad("X", ROOM_NAME_MAX_LENGTH + 1, "X")))
         );
 
-        Assertions.assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
-        Assertions.assertEquals(
+        assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
+        assertEquals(
             new ValidatorError(ROOM_NAME, ROOM_NAME + EXCEEDS_MAX_LENGTH),
             exception.getValidatorErrors().getError(0)
         );
@@ -56,11 +56,8 @@ public class RoomValidatorUnitTest {
             () -> victim.validate(newCreateRoomDTO().seats(null))
         );
 
-        Assertions.assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
-        Assertions.assertEquals(
-            new ValidatorError(ROOM_SEATS, ROOM_SEATS + MISSING),
-            exception.getValidatorErrors().getError(0)
-        );
+        assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
+        assertEquals(new ValidatorError(ROOM_SEATS, ROOM_SEATS + MISSING), exception.getValidatorErrors().getError(0));
     }
 
     @Test
@@ -70,8 +67,8 @@ public class RoomValidatorUnitTest {
             () -> victim.validate(newCreateRoomDTO().seats(ROOM_SEATS_MIN_VALUE - 1))
         );
 
-        Assertions.assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
-        Assertions.assertEquals(
+        assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
+        assertEquals(
             new ValidatorError(ROOM_SEATS, ROOM_SEATS + BELOW_MIN_VALUE),
             exception.getValidatorErrors().getError(0)
         );
@@ -84,8 +81,8 @@ public class RoomValidatorUnitTest {
             () -> victim.validate(newCreateRoomDTO().seats(ROOM_SEATS_MAX_VALUE + 1))
         );
 
-        Assertions.assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
-        Assertions.assertEquals(
+        assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
+        assertEquals(
             new ValidatorError(ROOM_SEATS, ROOM_SEATS + EXCEEDS_MAX_VALUE),
             exception.getValidatorErrors().getError(0)
         );

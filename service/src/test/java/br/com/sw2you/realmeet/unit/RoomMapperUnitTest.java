@@ -27,4 +27,13 @@ public class RoomMapperUnitTest extends BaseUnitTest {
         assertEquals(room.getSeats(), dto.getSeats());
         assertEquals(room.getId(), dto.getId());
     }
+
+    @Test
+    void testCreateRoomDtoToEntity() {
+        var createRoomDTO = TestDataCreator.newCreateRoomDTO();
+        var room = victim.fromCreateRoomDtoToEntity(createRoomDTO);
+
+        assertEquals(createRoomDTO.getName(), room.getName());
+        assertEquals(createRoomDTO.getSeats(), room.getSeats());
+    }
 }
