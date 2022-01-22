@@ -62,11 +62,16 @@ public class RoomValidatorUnitTest extends BaseUnitTest {
 
     @Test
     void testValidateWhenRoomSeatsAreMissing() {
-        var exception = Assertions.assertThrows(InvalidRequestException.class, () ->
-                victim.validate(newCreateRoomDTO().seats(null)));
+        var exception = Assertions.assertThrows(
+            InvalidRequestException.class,
+            () -> victim.validate(newCreateRoomDTO().seats(null))
+        );
 
         Assertions.assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
-        Assertions.assertEquals(new ValidatorError(ROOM_SEATS, ROOM_SEATS + MISSING), exception.getValidatorErrors().getError(0));
+        Assertions.assertEquals(
+            new ValidatorError(ROOM_SEATS, ROOM_SEATS + MISSING),
+            exception.getValidatorErrors().getError(0)
+        );
     }
 
     @Test

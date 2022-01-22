@@ -39,9 +39,9 @@ public final class ValidatorUtils {
     ) {
         if (!isBlank(field) && field.trim().length() > maxLength) {
             validatorErrors.add(fieldName, fieldName + ValidatorConstants.EXCEEDS_MAX_LENGTH);
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public static boolean validateMaxValue(
@@ -52,9 +52,9 @@ public final class ValidatorUtils {
     ) {
         if (!isNull(field) && field > maxValue) {
             validatorErrors.add(fieldName, fieldName + ValidatorConstants.EXCEEDS_MAX_VALUE);
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public static boolean validateMinValue(
@@ -65,8 +65,8 @@ public final class ValidatorUtils {
     ) {
         if (!isNull(field) && field < maxValue) {
             validatorErrors.add(fieldName, fieldName + ValidatorConstants.BELOW_MIN_VALUE);
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 }
