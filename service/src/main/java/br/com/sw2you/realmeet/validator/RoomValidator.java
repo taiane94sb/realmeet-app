@@ -5,7 +5,6 @@ import static br.com.sw2you.realmeet.validator.ValidatorUtils.*;
 
 import br.com.sw2you.realmeet.api.model.CreateRoomDTO;
 import br.com.sw2you.realmeet.domain.repository.RoomRepository;
-import br.com.sw2you.realmeet.exception.InvalidRequestException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,27 +18,33 @@ public class RoomValidator {
     public void validate(CreateRoomDTO createRoomDTO) {
         var validatorErrors = new ValidatorErrors();
 
-        // Room Name
-        validateRequired(createRoomDTO.getName(), ROOM_NAME, validatorErrors);
-        validateMaxLength(createRoomDTO.getName(), ROOM_NAME, ROOM_NAME_MAX_LENGTH, validatorErrors);
-
-        // Room Seats
-        validateRequired(createRoomDTO.getSeats(), ROOM_SEATS, validatorErrors);
-        validateMaxValue(createRoomDTO.getSeats(), ROOM_SEATS, ROOM_SEATS_MAX_VALUE, validatorErrors);
-        validateMinValue(createRoomDTO.getSeats(), ROOM_SEATS, ROOM_SEATS_MIN_VALUE, validatorErrors);
-
+        if (
+            validateName(createRoomDTO.getName(), validatorErrors) &&
+            validateSeats(createRoomDTO.getSeats(), validatorErrors)
+        ) {
+            validateNameDuplicate(createRoomDTO.getName(), validatorErrors);
+        }
         throwOnError(validatorErrors);
-
-        validateNameDuplicate(createRoomDTO.getName());
     }
 
-    private void validateNameDuplicate(String name) {
+    private boolean validateName(String name, ValidatorErrors validatorErrors) {
+        return (
+            validateRequired(name, ROOM_NAME, validatorErrors) &&
+            validateMaxLength(name, ROOM_NAME, ROOM_NAME_MAX_LENGTH, validatorErrors)
+        );
+    }
+
+    private boolean validateSeats(Integer seats, ValidatorErrors validatorErrors) {
+        return (
+            validateRequired(seats, ROOM_SEATS, validatorErrors) &&
+            validateMaxValue(seats, ROOM_SEATS, ROOM_SEATS_MAX_VALUE, validatorErrors) &&
+            validateMinValue(seats, ROOM_SEATS, ROOM_SEATS_MIN_VALUE, validatorErrors)
+        );
+    }
+
+    private void validateNameDuplicate(String name, ValidatorErrors validatorErrors) {
         roomRepository
             .findByNameAndActive(name, true)
-            .ifPresent(
-                __ -> {
-                    throw new InvalidRequestException(new ValidatorError(ROOM_NAME, ROOM_NAME + DUPLICATE));
-                }
-            );
+            .ifPresent(__ -> validatorErrors.add(ROOM_NAME, ROOM_NAME + DUPLICATE));
     }
 }

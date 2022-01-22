@@ -15,15 +15,16 @@ import br.com.sw2you.realmeet.validator.RoomValidator;
 import br.com.sw2you.realmeet.validator.ValidatorError;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 public class RoomValidatorUnitTest extends BaseUnitTest {
+    private RoomValidator victim;
+
     @Mock
     private RoomRepository roomRepository;
-
-    private RoomValidator victim;
 
     @BeforeEach
     void setupEach() {
@@ -60,18 +61,16 @@ public class RoomValidatorUnitTest extends BaseUnitTest {
     }
 
     @Test
-    void testValidateWhenSeatsAreMissing() {
-        var exception = assertThrows(
-            InvalidRequestException.class,
-            () -> victim.validate(newCreateRoomDTO().seats(null))
-        );
+    void testValidateWhenRoomSeatsAreMissing() {
+        var exception = Assertions.assertThrows(InvalidRequestException.class, () ->
+                victim.validate(newCreateRoomDTO().seats(null)));
 
-        assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
-        assertEquals(new ValidatorError(ROOM_SEATS, ROOM_SEATS + MISSING), exception.getValidatorErrors().getError(0));
+        Assertions.assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
+        Assertions.assertEquals(new ValidatorError(ROOM_SEATS, ROOM_SEATS + MISSING), exception.getValidatorErrors().getError(0));
     }
 
     @Test
-    void testValidateWhenSeatsAreLeesThenMinValue() {
+    void testValidateWhenSeatsAreLessThenMinValue() {
         var exception = assertThrows(
             InvalidRequestException.class,
             () -> victim.validate(newCreateRoomDTO().seats(ROOM_SEATS_MIN_VALUE - 1))
@@ -101,13 +100,10 @@ public class RoomValidatorUnitTest extends BaseUnitTest {
     @Test
     void testValidateWhenRoomNameIsDuplicate() {
         given(roomRepository.findByNameAndActive(DEFAULT_ROOM_NAME, true))
-                .willReturn(Optional.of(newRoomBuilder().build()));
+            .willReturn(Optional.of(newRoomBuilder().build()));
 
         var exception = assertThrows(InvalidRequestException.class, () -> victim.validate(newCreateRoomDTO()));
         assertEquals(1, exception.getValidatorErrors().getNumberOfErrors());
-        assertEquals(
-                new ValidatorError(ROOM_NAME, ROOM_NAME + DUPLICATE),
-                exception.getValidatorErrors().getError(0)
-        );
+        assertEquals(new ValidatorError(ROOM_NAME, ROOM_NAME + DUPLICATE), exception.getValidatorErrors().getError(0));
     }
 }

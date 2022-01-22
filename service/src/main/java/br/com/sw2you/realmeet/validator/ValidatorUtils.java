@@ -4,7 +4,6 @@ import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import br.com.sw2you.realmeet.exception.InvalidRequestException;
-import java.util.Objects;
 
 public final class ValidatorUtils {
 
