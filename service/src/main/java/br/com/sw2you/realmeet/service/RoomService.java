@@ -25,9 +25,7 @@ public class RoomService {
 
     public RoomDTO getRoom(Long id) {
         requireNonNull(id);
-        Room room = roomRepository
-            .findByIdAndActive(id, true)
-            .orElseThrow(() -> new RoomNotFoundException("Room not found: " + id));
+        Room room = getActiveRoomOrThrow(id);
         return roomMapper.fromEntityToDto(room);
     }
 
@@ -36,5 +34,17 @@ public class RoomService {
         var room = roomMapper.fromCreateRoomDtoToEntity(createRoomDTO);
         roomRepository.save(room);
         return roomMapper.fromEntityToDto(room);
+    }
+
+    public void deleteRoom(Long id) {
+        getActiveRoomOrThrow(id);
+
+    }
+
+    private Room getActiveRoomOrThrow(Long id) {
+        requireNonNull(id);
+        return roomRepository
+                .findByIdAndActive(id, true)
+                .orElseThrow(() -> new RoomNotFoundException("Room not found: " + id));
     }
 }
