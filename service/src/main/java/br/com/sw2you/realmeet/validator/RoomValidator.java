@@ -2,6 +2,7 @@ package br.com.sw2you.realmeet.validator;
 
 import static br.com.sw2you.realmeet.validator.ValidatorConstants.*;
 import static br.com.sw2you.realmeet.validator.ValidatorUtils.*;
+import static java.util.Objects.isNull;
 
 import br.com.sw2you.realmeet.api.model.CreateRoomDTO;
 import br.com.sw2you.realmeet.api.model.UpdateRoomDTO;
@@ -62,7 +63,7 @@ public class RoomValidator {
             .findByNameAndActive(name, true)
             .ifPresent(
                 room -> {
-                    if (!Objects.isNull(roomIdToExclude) && !Objects.equals(room.getId(), roomIdToExclude)) {
+                    if (isNull(roomIdToExclude) || !Objects.equals(room.getId(), roomIdToExclude)) {
                         validatorErrors.add(ROOM_NAME, ROOM_NAME + DUPLICATE);
                     }
                 }
