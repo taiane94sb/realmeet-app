@@ -2,22 +2,34 @@ package br.com.sw2you.realmeet.domain.entity;
 
 import br.com.sw2you.realmeet.domain.model.Employee;
 import java.time.OffsetDateTime;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "allocation")
 public class Allocation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "room_id")
     private Room room;
 
     private Employee employee;
 
+    @Column(name = "subject")
     private String subject;
 
+    @Column(name = "start_At")
     private OffsetDateTime startAt;
 
+    @Column(name = "end_At")
     private OffsetDateTime endAt;
 
+    @Column(name = "created_At")
     private OffsetDateTime createdAt;
 
+    @Column(name = "updated_At")
     private OffsetDateTime updatedAt;
 
     private Allocation(Builder builder) {
